@@ -1,0 +1,24 @@
+name: 'main_build'
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build_job:
+    runs-on: ubuntu-latest
+    name: Build & Test Microservice
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Image
+        run: ./scripts/docker_build
+      - name: Upload Image
+        run: ./scripts/docker_push
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
